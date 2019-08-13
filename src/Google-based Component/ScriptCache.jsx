@@ -1,42 +1,49 @@
 let counter = 0;
-let scriptMap = new Map();
+let scriptMap = new Map(); //method that creates a new map inside the given HTML container
+
+//Script Cache is a function that is globally assigned to the Browser Object Model (Window) that means it is now a method that can be used from any place on a page.
 
 export const ScriptCache = (function(global) {
   return function ScriptCache (scripts) {
-    const Cache = {}
+    const Cache = {}; //object type
 
-    Cache._onLoad = function (key) {
+
+    //if ScriptCache is already loaded on a page it calls the callback from onLoad
+    // function immediatelly
+    Cache._onLoad = function (key) { //przekazuję w metodzie jako argument klucz api i wywołuje zwraca callback funkcji
       return (cb) => {
-        let stored = scriptMap.get(key);
+        let stored = scriptMap.get(key); //przypisuje do zmiennej stored nową mapę utworzoną przez metodę get na podstawie podanego klucza do API
         if (stored) {
-          stored.promise.then(() => {
-            stored.error ? cb(stored.error) : cb(null, stored)
+          stored.promise.then(() => {  //gdy promise się zakończy i zawiera daną zwrtotną zostanie wykonana funkcja ktrej argumentem będzie dana zwrotna
+            stored.error ? cb(stored.error) : cb(null, stored) //jeżeli warunek jest true czyli nie mamy dostępu do API zwracany jest callback error jeżeli jest false zwracany jest callback z mapą
           })
-        } else {
-          // TODO:
         }
       }
-    }
+    };
+
+    //w przypadku gdy ScriptCache nie był załadowany wywołuje się callback funkcji scriptTag ktry tworzy tag <script>
 
     Cache._scriptTag = (key, src) => {
       if (!scriptMap.has(key)) {
         let tag = document.createElement('script');
+
+        //tworzymy obiekt promise, ktry jako parametr przyjmuje funkcję ktora uruchomiona jest od razu. jej argumentami sa resolve i reject (ktore takze sa funkcjami)
         let promise = new Promise((resolve, reject) => {
-          let resolved = false,
-              errored = false,
-              body = document.getElementsByTagName('body')[0];
+          // let resolved = false,
+          //     errored = false,
+            let body = document.getElementsByTagName('body')[0];
 
           tag.type = 'text/javascript';
           tag.async = false; // Load in order
 
           const cbName = `loaderCB${counter++}${Date.now()}`;
-          let cb;
+          let cb; //it is declared here and used in line 76
 
           let handleResult = (state) => {
             return (evt) => {
               let stored = scriptMap.get(key);
               if (state === 'loaded') {
-                stored.resolved = true;
+                stored.resolved = true; //jeżeli mamy wynik z promise wyświetl go
                 resolve(src);
                 // stored.handlers.forEach(h => h.call(null, stored))
                 // stored.handlers = []
@@ -44,24 +51,24 @@ export const ScriptCache = (function(global) {
                 stored.errored = true;
                 // stored.handlers.forEach(h => h.call(null, stored))
                 // stored.handlers = [];
-                reject(evt)
+                reject(evt) //jeżeli mamy problem z promise oznaczamy promise jako
+                // odrzucony i jako argument funkcji przekazujemy powod bledu
               }
-
               cleanup();
             }
-          }
+          };
 
           const cleanup = () => {
             if (global[cbName] && typeof global[cbName] === 'function') {
               global[cbName] = null;
             }
-          }
+          };
 
           tag.onload = handleResult('loaded');
-          tag.onerror = handleResult('error')
+          tag.onerror = handleResult('error');
           tag.onreadystatechange = () => {
             handleResult(tag.readyState)
-          }
+          };
 
           // Pick off callback, if there is one
           if (src.match(/callback=CALLBACK_NAME/)) {
@@ -97,6 +104,6 @@ export const ScriptCache = (function(global) {
 
     return Cache;
   }
-})(window)
+})(window);
 
 export default ScriptCache;

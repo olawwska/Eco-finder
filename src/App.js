@@ -1,5 +1,5 @@
 import React from 'react';
-import Container from './Container';
+import {Container} from './Container';
 import GoogleApiComponent
   from "./Google-based Component/GoogleApiComponent";
 
@@ -16,5 +16,5 @@ export class App extends React.Component {
   }
 }
 
-export default App;
+//Google Api Component is responsible for passing through loaded prop
 

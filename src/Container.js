@@ -1,7 +1,7 @@
 import React from 'react';
 import {Map} from './Map';
 
-export default class Container extends React.Component{
+export class Container extends React.Component{
   render() {
 
     const style = {
@@ -19,3 +19,5 @@ export default class Container extends React.Component{
     )
   }
 }
+
+// component responsible for loading the Google Api

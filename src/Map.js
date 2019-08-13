@@ -1,12 +1,29 @@
 import React from 'react';
 import ReactDom from 'react-dom';
+import PropTypes from 'prop-types';
+
 
 export class Map extends React.Component{
+  constructor(props){
+    super(props);
+
+    const {lat, lng} = this.props.initialCenter;
+    this.state = {
+      currentLocation: {
+        lat: lat,
+        lng: lng
+      }
+    }
+  }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.google !== this.props.google){
       this.loadMap();
     }
+  }
+
+  componentDidMount() {
+    this.loadMap();
   }
 
   loadMap(){
@@ -17,9 +34,8 @@ export class Map extends React.Component{
       const mapRef = this.refs.map;
       const node = ReactDom.findDOMNode(mapRef);
 
-      let zoom = 14;
-      let lat = 37.774929;
-      let lng = -122.419416;
+      let {initialCenter, zoom} = this.props;
+      const {lat, lng} = initialCenter;
       const center = new maps.LatLng(lat, lng);
       const mapConfig = Object.assign({}, {
         center: center,
@@ -29,12 +45,7 @@ export class Map extends React.Component{
     }
   }
 
-  componentDidMount() {
-    this.loadMap();
-  }
-
   render() {
-
     const style = {
       width: '100vw',
       height: '100vw'
@@ -47,3 +58,18 @@ export class Map extends React.Component{
     )
   }
 }
+
+Map.propTypes = {
+  google: PropTypes.object,
+  zoom: PropTypes.number,
+  initialCenter: PropTypes.object
+};
+
+Map.defaultProps = {
+  zoom: 14,
+  // Warsaw, by default
+  initialCenter: {
+    lat: 52.229676,
+    lng: 21.012229
+  }
+};
