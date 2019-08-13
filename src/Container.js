@@ -1,5 +1,6 @@
 import React from 'react';
 import {Map} from './Map';
+import {Header} from './Header';
 
 export class Container extends React.Component{
   render() {
@@ -14,6 +15,7 @@ export class Container extends React.Component{
     }
     return(
         <div style={style}>
+          <Header/>
           <Map google={this.props.google}/>
         </div>
     )
