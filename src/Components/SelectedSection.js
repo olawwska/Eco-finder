@@ -3,11 +3,18 @@ import Select from 'react-select'
 
 const selectedSectionStyles = {
     display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
 };
 
 const colourStyles = {
-    container: styles => ({...styles, paddingLeft: '70px', width: '500px'}),
+    container: styles => ({...styles, padding: '0 70px', width: '40em'}),
+    placeholder: styles => ({...styles, fontFamily: 'Arial', opacity: '0.7', textTransform: 'uppercase'}),
+    menuList: styles => ({...styles, fontFamily: 'Arial', opacity: '0.7'}),
+    menu: styles => ({...styles, width: '500px'}),
+    control: styles => ({...styles, fontFamily: 'Arial', opacity: '0.8'}),
 };
+
 
 const options = [
     { value: 'Śródmieście Południowe', label: 'Śródmieście Południowe' },
@@ -43,6 +50,16 @@ export class SelectedSection extends React.Component {
                     onChange={this.handleChange}
                     options={options}
                     styles={colourStyles}
+                    placeholder={'wybierz dzielnicę...'}
+                    theme={theme => ({
+                        ...theme,
+                        borderRadius: 0,
+                        colors: {
+                            ...theme.colors,
+                            primary25: 'hotpink',
+                            primary: 'black',
+                        },
+                    })}
                 >
                 </Select>
                 <Select
@@ -50,6 +67,16 @@ export class SelectedSection extends React.Component {
                     onChange={this.handleChange2}
                     options={options2}
                     styles={colourStyles}
+                    placeholder={'wybierz usługę...'}
+                    theme={theme => ({
+                        ...theme,
+                        borderRadius: 0,
+                        colors: {
+                            ...theme.colors,
+                            primary25: 'hotpink',
+                            primary: 'black',
+                        },
+                    })}
                 >
                 </Select>
             </div>
