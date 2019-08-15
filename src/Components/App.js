@@ -1,7 +1,10 @@
 import React from 'react';
 import {Container} from './Container';
+
 import GoogleApiComponent
-  from "./Google-based Component/GoogleApiComponent";
+  from "../Google-based Component/GoogleApiComponent";
+
+import '../../node_modules/normalize.css/normalize.css';
 
 const MyMap = GoogleApiComponent({
   apiKey: 'AIzaSyBbllFbOfzQ-i6NZniU8LuJq4LGAR6RwNs '
@@ -11,7 +14,7 @@ export class App extends React.Component {
 
   render() {
     return (
-        <MyMap/>
+        <MyMap />
     );
   }
 }
