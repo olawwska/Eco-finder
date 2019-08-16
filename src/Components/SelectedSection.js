@@ -1,6 +1,8 @@
 import React from 'react';
 import Select from 'react-select'
 
+import {ButtonSection} from './ButtonSection';
+
 const selectedSectionStyles = {
     display: 'flex',
     flexWrap: 'wrap',
@@ -33,11 +35,11 @@ export class SelectedSection extends React.Component {
     };
     handleChange = (selectedOption) => {
         this.setState({selectedOption});
-        return selectedOption
+        return selectedOption;
     };
     handleChange2 = (selectedOption2) => {
         this.setState({selectedOption2});
-        return selectedOption2
+        return selectedOption2;
     };
     render() {
         const {selectedOption} = this.state;
@@ -79,6 +81,7 @@ export class SelectedSection extends React.Component {
                     })}
                 >
                 </Select>
+                <ButtonSection/>
             </div>
         )
     }

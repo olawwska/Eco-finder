@@ -3,6 +3,8 @@ import ReactDom from 'react-dom';
 import PropTypes from 'prop-types';
 
 
+
+
 export class Map extends React.Component{
   constructor(props){
     super(props);
@@ -45,6 +47,18 @@ export class Map extends React.Component{
     }
   }
 
+  renderChildren(){
+    const {children} = this.props;
+    if (!children) return;
+     return React.Children.map(children, c => {
+       return React.cloneElement(c, {
+         map: this.map,
+         google: this.props.google,
+         mapCenter: this.state.currentLocation
+       });
+     })
+  }
+
   render() {
     const style = {
       width: '100vw',
@@ -52,8 +66,8 @@ export class Map extends React.Component{
     };
 
     return (
-        <div style={style} ref='map'>
-          Loading map...
+        <div style={style} ref='map'> Loading map...
+          {this.renderChildren()}
         </div>
     )
   }
