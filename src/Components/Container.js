@@ -2,6 +2,7 @@ import React from 'react';
 import {Map} from './Map';
 import {Header} from './Header';
 import {Marker} from './Marker';
+import {InfoWindow} from "./InfoWindow";
 
 import firebase from '../firebase';
 
@@ -44,8 +45,25 @@ export class Container extends React.Component{
           selectedPlace: props,
           activeMarker: marker,
           showingInfoWindow: true
-      })  ;
-      console.log(this.state);
+      });
+        console.log('klik w marker')
+    };
+
+
+    onMapClick() {
+        if (this.state.showingInfoWindow){
+            this.setState({
+                showingInfoWindow: false,
+                activeMarker: null
+            })
+        }
+    };
+
+    onInfoWindowClose(){
+        this.setState({
+            showingInfoWindow: false,
+            activeMarker: null
+        })
     };
 
     render() {
@@ -61,7 +79,8 @@ export class Container extends React.Component{
         return(
             <div style={style}>
               <Header clickMethod={this.handleClickButton}/>
-                <Map google={this.props.google}>
+                <Map google={this.props.google}
+                    onClick={this.props.onMapClick}>
                     {Object.values(this.state.Vegan).filter(vegan => {
                         return this.state.passedSelectedOption1.value === vegan.locality &&
                             this.state.passedSelectedOption2.value === vegan.type
@@ -76,8 +95,17 @@ export class Container extends React.Component{
                                             lat: vegan.latitude,
                                             lng: vegan.longitude,
                                         }}/>
-                    })
+                        })
                     }
+                    <InfoWindow
+                            marker={this.state.activeMarker}
+                            visible={this.state.showingInfoWindow}
+                            onClose={this.onInfoWindowClose}>
+                        <div>
+                            <h1>{this.state.selectedPlace.name}</h1>
+                            <a href={this.state.selectedPlace.url}>{this.state.selectedPlace.url}</a>
+                        </div>
+                    </InfoWindow>
                 </Map>
             </div>
         )

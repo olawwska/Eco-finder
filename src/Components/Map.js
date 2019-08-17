@@ -18,11 +18,12 @@ export class Map extends React.Component{
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.google !== this.props.google){
       this.loadMap();
     }
   }
+
 
   componentDidMount() {
     this.loadMap();
@@ -76,7 +77,7 @@ export class Map extends React.Component{
 Map.propTypes = {
   google: PropTypes.object,
   zoom: PropTypes.number,
-  initialCenter: PropTypes.object
+  initialCenter: PropTypes.object,
 };
 
 Map.defaultProps = {
