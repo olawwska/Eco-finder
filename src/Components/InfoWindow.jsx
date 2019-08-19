@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server'
 
 export class InfoWindow extends React.Component {
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate (prevProps, prevState) {
         if (this.props.map !== prevProps.map) {
             this.renderInfoWindow();
         }
@@ -28,15 +28,12 @@ export class InfoWindow extends React.Component {
         google.maps.event
             .addListener(iw, 'domready', this.onOpen.bind(this));
     }
-
     onOpen() {
         if (this.props.onOpen) this.props.onOpen();
     }
-
     onClose() {
         if (this.props.onOpen) this.props.onOpen();
     }
-
     updateContent() {
         const content = this.renderChildren();
         this.infowindow
