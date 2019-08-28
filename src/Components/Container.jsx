@@ -74,8 +74,8 @@ export class Container extends React.Component{
         })
     };
 
-    testFunction = (parameters) => {
-        Object.values(parameters).filter(parameter => {
+    markerCreate = (parameters) => {
+        return Object.values(parameters).filter(parameter => {
             return this.state.passedSelectedOption1.value === parameter.locality && this.state.passedSelectedOption2.value === parameter.type}).map((parameter) =>  {
                 return <Marker onClick={this.onMarkerClick}
                                 key={parameter.name}
@@ -101,34 +101,8 @@ export class Container extends React.Component{
               /*do properties Headera dodajemy clickMethod*/
                 <Map google={this.props.google}
                     onClick={this.props.onMapClick}>
-                    {this.testFunction(this.state.Vegan)}
-                    {this.testFunction(this.state.Glutenfree)}
-                    {/*{Object.values(this.state.Vegan).filter(vegan => {*/}
-                        {/*return this.state.passedSelectedOption1.value === vegan.locality &&*/}
-                            {/*this.state.passedSelectedOption2.value === vegan.type*/}
-                    {/*}).map((vegan) => {*/}
-                        {/*return <Marker  onClick={this.onMarkerClick}*/}
-                                        {/*key={vegan.name}*/}
-                                        {/*restaurant={vegan}*/}
-                                        {/*position={{*/}
-                                            {/*lat: vegan.latitude,*/}
-                                            {/*lng: vegan.longitude,*/}
-                                        {/*}}/>*/}
-                        {/*})*/}
-                    {/*}*/}
-                    {/*{Object.values(this.state.Glutenfree).filter(glutenfree => {*/}
-                        {/*return this.state.passedSelectedOption1.value === glutenfree.locality &&*/}
-                            {/*this.state.passedSelectedOption2.value === glutenfree.type*/}
-                    {/*}).map((glutenfree) => {*/}
-                        {/*return <Marker  onClick={this.onMarkerClick}*/}
-                                        {/*key={glutenfree.name}*/}
-                                        {/*restaurant={glutenfree}*/}
-                                        {/*position={{*/}
-                                            {/*lat: glutenfree.latitude,*/}
-                                            {/*lng: glutenfree.longitude,*/}
-                                        {/*}}/>*/}
-                        {/*})*/}
-                    {/*}*/}
+                    {this.markerCreate(this.state.Vegan)}
+                    {this.markerCreate(this.state.Glutenfree)}
                     <InfoWindow
                             marker={this.state.activeMarker}
                             visible={this.state.showingInfoWindow}
