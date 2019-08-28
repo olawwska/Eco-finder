@@ -64,18 +64,19 @@ export class Header extends React.Component{
         this.setState({selectedOption});
         return selectedOption;
     };
+
     handleChange2 = (selectedOption2) => {
         this.setState({selectedOption2});
         return selectedOption2;
     };
 
     handleSubmit = () => {
-        console.log('DZIAŁA');
-        console.log(this.state.selectedOption);
-        console.log(this.state.selectedOption2);
-
         if ( typeof this.props.clickMethod === 'function' ){
+            //odwołujemy sie do props ponieważ metoda przekazana jest od komponentu rodzica i sprawdzamy czy jest ona (handleClickButton)funkcją
+
             this.props.clickMethod(this.state.selectedOption, this.state.selectedOption2);
+
+            //jeżeli jest funkcją to przekazujemy do niej (handleClickButton dwa argumenty jakimi są pobrane ze wcześniej zmienionego stanu Headera selectedOption i selectedOption2)
         }
     };
 

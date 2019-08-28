@@ -81,7 +81,7 @@ Map.propTypes = {
 };
 
 Map.defaultProps = {
-  zoom: 14,
+  zoom: 12,
   // Warsaw, by default
   initialCenter: {
     lat: 52.229676,

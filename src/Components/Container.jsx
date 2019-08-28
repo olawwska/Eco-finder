@@ -12,6 +12,7 @@ export class Container extends React.Component{
         super(props);
         this.state = {
             Vegan: [],
+            Glutenfree: [],
             passedSelectedOption1: {},
             passedSelectedOption2: {},
             showingInfoWindow: false,
@@ -24,13 +25,21 @@ export class Container extends React.Component{
     componentDidMount() {
         const itemsRef = firebase.database().ref('Vegan');
         itemsRef.on('value', (snapshot) => {
-            console.log(snapshot.val());
             let vegans = snapshot.val();
             this.setState({
                 Vegan: vegans
-            })
-        })
+            });
+        });
+        const itemsRef2 = firebase.database().ref('Glutenfree');
+        itemsRef2.on('value', (snapshot) => {
+            let glutenfrees = snapshot.val();
+            this.setState({
+                Glutenfree: glutenfrees
+            });
+        });
     }
+
+
 
     handleClickButton = (paramFromChild1, paramFromChild2) => {
         console.log('Metoda przekazujaca dane do kontenera przez header', paramFromChild1, paramFromChild2);
@@ -38,6 +47,7 @@ export class Container extends React.Component{
             passedSelectedOption1: paramFromChild1,
             passedSelectedOption2: paramFromChild2,
         })
+        //metoda pobiera argumenty ze stanu Headera - selectedOption1 i selectedOption2 i przypisuje je do stanu Container jako wartości kluczy passedSelectedOption1 oraz passedSelectedOption2
     };
 
     onMarkerClick = (props, marker) => {
@@ -46,9 +56,7 @@ export class Container extends React.Component{
           activeMarker: marker,
           showingInfoWindow: true
       });
-        console.log('klik w marker')
     };
-
 
     onMapClick() {
         if (this.state.showingInfoWindow){
@@ -66,6 +74,16 @@ export class Container extends React.Component{
         })
     };
 
+    testFunction = (parameters) => {
+        parameters.filter(parameter => {
+            return this.state.passedSelectedOption1.value === parameter.locality && this.state.passedSelectedOption2.value === parameter.type}).map((parameter) =>  {
+                return <Marker onClick={this.onMarkerClick}
+                                key={parameter.name}
+                                restaurant={parameter}
+                                position={{lat: parameter.latitude, lng: parameter.longitude}}/>
+        })
+    };
+
     render() {
 
         const style = {
@@ -73,30 +91,44 @@ export class Container extends React.Component{
           height: '100vw'
         };
 
+
         if(!this.props.loaded){
           return <div> Loading... </div>
         }
         return(
             <div style={style}>
               <Header clickMethod={this.handleClickButton}/>
+              /*do properties Headera dodajemy clickMethod*/
                 <Map google={this.props.google}
                     onClick={this.props.onMapClick}>
-                    {Object.values(this.state.Vegan).filter(vegan => {
-                        return this.state.passedSelectedOption1.value === vegan.locality &&
-                            this.state.passedSelectedOption2.value === vegan.type
-                    }).map((vegan) => {
-                        console.log(vegan.locality + 'test');
-                        console.log(vegan.type + 'test');
-
-                        return <Marker  onClick={this.onMarkerClick}
-                                        key={vegan.name}
-                                        restaurant={vegan}
-                                        position={{
-                                            lat: vegan.latitude,
-                                            lng: vegan.longitude,
-                                        }}/>
-                        })
-                    }
+                    {this.testFunction(Object.values(this.state.Vegan))}
+                    {this.testFunction(Object.values(this.state.Glutenfree))}
+                    {/*{Object.values(this.state.Vegan).filter(vegan => {*/}
+                        {/*return this.state.passedSelectedOption1.value === vegan.locality &&*/}
+                            {/*this.state.passedSelectedOption2.value === vegan.type*/}
+                    {/*}).map((vegan) => {*/}
+                        {/*return <Marker  onClick={this.onMarkerClick}*/}
+                                        {/*key={vegan.name}*/}
+                                        {/*restaurant={vegan}*/}
+                                        {/*position={{*/}
+                                            {/*lat: vegan.latitude,*/}
+                                            {/*lng: vegan.longitude,*/}
+                                        {/*}}/>*/}
+                        {/*})*/}
+                    {/*}*/}
+                    {/*{Object.values(this.state.Glutenfree).filter(glutenfree => {*/}
+                        {/*return this.state.passedSelectedOption1.value === glutenfree.locality &&*/}
+                            {/*this.state.passedSelectedOption2.value === glutenfree.type*/}
+                    {/*}).map((glutenfree) => {*/}
+                        {/*return <Marker  onClick={this.onMarkerClick}*/}
+                                        {/*key={glutenfree.name}*/}
+                                        {/*restaurant={glutenfree}*/}
+                                        {/*position={{*/}
+                                            {/*lat: glutenfree.latitude,*/}
+                                            {/*lng: glutenfree.longitude,*/}
+                                        {/*}}/>*/}
+                        {/*})*/}
+                    {/*}*/}
                     <InfoWindow
                             marker={this.state.activeMarker}
                             visible={this.state.showingInfoWindow}
