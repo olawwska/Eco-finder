@@ -75,7 +75,7 @@ export class Container extends React.Component{
     };
 
     testFunction = (parameters) => {
-        parameters.filter(parameter => {
+        Object.values(parameters).filter(parameter => {
             return this.state.passedSelectedOption1.value === parameter.locality && this.state.passedSelectedOption2.value === parameter.type}).map((parameter) =>  {
                 return <Marker onClick={this.onMarkerClick}
                                 key={parameter.name}
@@ -101,8 +101,8 @@ export class Container extends React.Component{
               /*do properties Headera dodajemy clickMethod*/
                 <Map google={this.props.google}
                     onClick={this.props.onMapClick}>
-                    {this.testFunction(Object.values(this.state.Vegan))}
-                    {this.testFunction(Object.values(this.state.Glutenfree))}
+                    {this.testFunction(this.state.Vegan)}
+                    {this.testFunction(this.state.Glutenfree)}
                     {/*{Object.values(this.state.Vegan).filter(vegan => {*/}
                         {/*return this.state.passedSelectedOption1.value === vegan.locality &&*/}
                             {/*this.state.passedSelectedOption2.value === vegan.type*/}
